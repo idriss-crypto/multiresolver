@@ -4,8 +4,9 @@ import { MetamaskActions, MetaMaskContext } from '../hooks';
 import {
   connectSnap,
   getSnap,
-  sendHello,
+  resolveInput,
   shouldDisplayReconnectButton,
+  sendTransaction,
 } from '../utils';
 import {
   ConnectButton,
@@ -118,8 +119,15 @@ export const Home = () => {
   };
 
   const handleSendHelloClick = async () => {
+    const id_ =
+      (document.getElementById('idToResolve') as HTMLInputElement).value ??
+      '@levertz_';
     try {
-      await sendHello();
+      const response = (await resolveInput(id_))?.toString() ?? null;
+      console.log(response);
+      if (response) {
+        await sendTransaction(response);
+      }
     } catch (e) {
       console.error(e);
       dispatch({ type: MetamaskActions.SetError, payload: e });
@@ -185,9 +193,10 @@ export const Home = () => {
         )}
         <Card
           content={{
-            title: 'Send Hello message',
+            title: 'Resolve with IDriss',
             description:
-              'Display a custom message within a confirmation screen in MetaMask.',
+              'Translate a Twitter username to an address and display it within MetaMask.',
+            resolve: true,
             button: (
               <SendHelloButton
                 onClick={handleSendHelloClick}

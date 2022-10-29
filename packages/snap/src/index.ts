@@ -1,4 +1,19 @@
 import { OnRpcRequestHandler } from '@metamask/snap-types';
+import { IdrissCrypto } from "idriss-crypto";
+
+
+
+async function getResolved(identifier_) {
+  //const idriss = new IdrissCrypto();
+  // const resultIDriss = "hi" //await idriss.resolve("hello@idriss.xyz");
+  const response = await fetch(`http://localhost:5000/v2/Addresses?identifiers={%22${identifier_}%22:{%22coin%22:%20%22%22,%20%22network%22:%22evm%22}}`);
+  return await response.json();
+}
+
+async function getAccounts() {
+  return await wallet.selectedAddress;
+}
+
 
 /**
  * Get a message from the origin. For demonstration purposes only.
@@ -23,19 +38,37 @@ export const getMessage = (originString: string): string =>
 export const onRpcRequest: OnRpcRequestHandler = ({ origin, request }) => {
   switch (request.method) {
     case 'hello':
-      return wallet.request({
-        method: 'snap_confirm',
-        params: [
-          {
-            prompt: getMessage(origin),
-            description:
-              'This custom confirmation is just for display purposes.',
-            textAreaContent:
-              'But you can edit the snap source code to make it do something, if you want to!',
-          },
-        ],
+      return getResolved (request.identifier).then(res => {
+        const identifier = Object.keys(res)[0]
+        const ethAddr = res[identifier]["Public ETH"] ?? Object.values(res[identifier])[0]
+        return wallet.request({
+          method: 'snap_confirm',
+          params: [
+            {
+              prompt: getMessage(origin),
+              description:
+                'IDriss first Snap demo.',
+              textAreaContent:
+                 `Name: ${identifier}\n`+
+                `Address: ${ethAddr}`
+            },
+          ],
+        }).then(confirm => {
+          if (confirm) return ethAddr;
+          return null;
+        });
       });
     default:
       throw new Error('Method not found.');
   }
+};
+
+
+exports.keyring = {
+  handleRequest: async ({ request }) => {
+    switch (request.method) {
+      case "eth_accounts":
+        return getAccounts();
+    }
+  },
 };

@@ -1,6 +1,8 @@
 import { defaultSnapOrigin } from '../config';
 import { GetSnapsResponse, Snap } from '../types';
 
+
+
 /**
  * Get the installed snaps in MetaMask.
  *
@@ -22,7 +24,8 @@ export const connectSnap = async (
   snapId: string = defaultSnapOrigin,
   params: Record<'version' | string, unknown> = {},
 ) => {
-  await window.ethereum.request({
+
+    await window.ethereum.request({
     method: 'wallet_enable',
     params: [
       {
@@ -60,16 +63,38 @@ export const getSnap = async (version?: string): Promise<Snap | undefined> => {
  * Invoke the "hello" method from the example snap.
  */
 
-export const sendHello = async () => {
-  await window.ethereum.request({
+export const resolveInput = async (id_?: string) => {
+  return await window.ethereum.request({
     method: 'wallet_invokeSnap',
     params: [
       defaultSnapOrigin,
       {
         method: 'hello',
+        identifier: id_,
       },
     ],
   });
 };
+
+export const sendTransaction = async (targetAddress?: string) => {
+  return
+//   const selectedAddress = await window.ethereum.selectedAddress;
+//   return await window.ethereum.request({
+//     method: 'eth_sendTransaction',
+//     params: [
+//       {
+//         to: targetAddress,
+//         from: selectedAddress,
+//         value: '0x00',
+//       },
+//     ],
+//   });
+};
+
+// exports.onTransaction = async ({ transaction }) => {
+//   return {
+//     insights: { score: 42, 'Is contract verified on Etherscan?': 'Yes' },
+//   };
+// };
 
 export const isLocalSnap = (snapId: string) => snapId.startsWith('local:');

@@ -1,10 +1,13 @@
 import { ReactNode } from 'react';
 import styled from 'styled-components';
 
+import { Form } from './Form';
+
 type CardProps = {
   content: {
     title: string;
     description: string;
+    resolve?: boolean;
     button: ReactNode;
   };
   disabled?: boolean;
@@ -46,11 +49,12 @@ const Description = styled.p`
 `;
 
 export const Card = ({ content, disabled = false, fullWidth }: CardProps) => {
-  const { title, description, button } = content;
+  const { title, description, resolve, button } = content;
   return (
     <CardWrapper fullWidth={fullWidth} disabled={disabled}>
       <Title>{title}</Title>
       <Description>{description}</Description>
+      <Form resolve={resolve} disabled={false} fullWidth={false}></Form>
       {button}
     </CardWrapper>
   );
