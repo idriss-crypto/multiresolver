@@ -11653,14 +11653,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"idriss-crypto@npm:^1.8.1":
-  version: 1.8.1
-  resolution: "idriss-crypto@npm:1.8.1"
+"idriss-crypto@npm:1.4.0":
+  version: 1.4.0
+  resolution: "idriss-crypto@npm:1.4.0"
   dependencies:
     "@types/node-fetch": ^2.5.12
     node-fetch: ^2.6.7
-    web3: ^1.7.4
-  checksum: 4db1739c97c6baf0b62bdd87025a7495bb449f5baf74abb0c1a9feca4a90f6970a5965aac937f3624742d50a3aa556e983c1632c13ba3ee9c4c32c4bb04ce7a7
+    web3: ^1.6.0
+  checksum: bee5de8587b5452770592633cc94442c5eb8d6a76ddb907885f0acfa208b76267ef3340f082df65c91b6f110b0dbc3823ab9890c226fb720023ace3bf96fbe44
   languageName: node
   linkType: hard
 
@@ -17012,7 +17012,7 @@ __metadata:
     eslint-plugin-jsdoc: ^39.2.9
     eslint-plugin-node: ^11.1.0
     eslint-plugin-prettier: ^4.2.1
-    idriss-crypto: ^1.8.1
+    idriss-crypto: 1.4.0
     prettier: ^2.2.1
     prettier-plugin-packagejson: ^2.2.11
     rimraf: ^3.0.2
@@ -18884,7 +18884,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web3@npm:^1.7.4":
+"web3@npm:^1.6.0":
   version: 1.8.0
   resolution: "web3@npm:1.8.0"
   dependencies:

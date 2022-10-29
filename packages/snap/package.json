@@ -58,6 +58,6 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "idriss-crypto": "^1.8.1"
+    "idriss-crypto": "1.4.0"
   }
 }

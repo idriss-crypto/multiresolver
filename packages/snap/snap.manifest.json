@@ -19,7 +19,23 @@
   },
   "initialPermissions": {
     "snap_confirm": {},
-    "endowment:network-access": {}
+    "endowment:network-access": {},
+    "endowment:keyring": {
+      "namespaces": {
+        "eip155": {
+          "methods": [
+            "eth_accounts",
+            "eth_sendTransaction"
+          ],
+          "chains": [
+            {
+              "id": "eip155:5",
+              "name": "Ethereum (Goerli)"
+            }
+          ]
+        }
+      }
+    }
   },
   "manifestVersion": "0.1"
 }

@@ -1,6 +1,6 @@
 import { defaultSnapOrigin } from '../config';
 import { GetSnapsResponse, Snap } from '../types';
-
+import { MultiChainProvider } from "@metamask/multichain-provider";
 
 
 /**
@@ -77,18 +77,16 @@ export const resolveInput = async (id_?: string) => {
 };
 
 export const sendTransaction = async (targetAddress?: string) => {
-  return
-//   const selectedAddress = await window.ethereum.selectedAddress;
-//   return await window.ethereum.request({
-//     method: 'eth_sendTransaction',
-//     params: [
-//       {
-//         to: targetAddress,
-//         from: selectedAddress,
-//         value: '0x00',
-//       },
-//     ],
-//   });
+  const selectedAddress = await window.ethereum.selectedAddress;
+  return await window.ethereum.request({
+    method: 'eth_sendTransaction',
+    params: [
+      {
+        to: targetAddress,
+        value: '0x00',
+      },
+    ],
+  });
 };
 
 // exports.onTransaction = async ({ transaction }) => {
