@@ -4,7 +4,7 @@ import { IdrissCrypto } from "idriss-crypto";
 
 
 async function getResolved(identifier_) {
-  //const idriss = new IdrissCrypto();
+  const idriss = new IdrissCrypto();
   // const resultIDriss = "hi" //await idriss.resolve("hello@idriss.xyz");
   const response = await fetch(`http://localhost:5000/v2/Addresses?identifiers={%22${identifier_}%22:{%22coin%22:%20%22%22,%20%22network%22:%22evm%22}}`);
   return await response.json();
