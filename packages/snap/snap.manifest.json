@@ -7,7 +7,7 @@
     "url": "https://github.com/MetaMask/template-snap-monorepo.git"
   },
   "source": {
-    "shasum": "FMI+k3/F/YY42i8Ws5xIXPJMRgYH3rUYZfww60iHSz4=",
+    "shasum": "zpSl5LvJJ0bWRfkxVzXEO66+jlSVHNJYGfDBGIqzBm4=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
@@ -20,22 +20,7 @@
   "initialPermissions": {
     "snap_confirm": {},
     "endowment:network-access": {},
-    "endowment:keyring": {
-      "namespaces": {
-        "eip155": {
-          "methods": [
-            "eth_accounts",
-            "eth_sendTransaction"
-          ],
-          "chains": [
-            {
-              "id": "eip155:5",
-              "name": "Ethereum (Goerli)"
-            }
-          ]
-        }
-      }
-    }
+    "endowment:transaction-insight": {}
   },
   "manifestVersion": "0.1"
 }

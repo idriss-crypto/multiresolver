@@ -118,18 +118,15 @@ const Index = () => {
       dispatch({ type: MetamaskActions.SetError, payload: e });
     }
   };
-
   const handleSendHelloClick = async () => {
     const id_ =
       (document.getElementById('idToResolve') as HTMLInputElement).value ??
-      '@levertz_';
+      '@consensys';
     try {
       const response = (await resolveInput(id_))?.toString() ?? null;
-      console.log(response);
       if (response) {
-        console.log("not doing the transaction")
+        console.log("TxnHash: ", response);
         return
-        //await sendTransaction(id_);
       }
     } catch (e) {
       console.error(e);
@@ -140,10 +137,10 @@ const Index = () => {
   return (
     <Container>
       <Heading>
-        Welcome to <Span>template-snap</Span>
+        Welcome to <Span>Multi Resolver Snap</Span>
       </Heading>
       <Subtitle>
-        Get started by editing <code>src/index.ts</code>
+        The snap that lets you send crypto to <Span>anything</Span>.
       </Subtitle>
       <CardContainer>
         {state.error && (
@@ -167,7 +164,7 @@ const Index = () => {
             content={{
               title: 'Connect',
               description:
-                'Get started by connecting to and installing the example snap.',
+                'Connect and install the multi resolve snap!',
               button: (
                 <ConnectButton
                   onClick={handleConnectClick}
@@ -183,7 +180,7 @@ const Index = () => {
             content={{
               title: 'Reconnect',
               description:
-                'While connected to a local running snap this button will always be displayed in order to update the snap if a change is made.',
+                'If you have made any changes, please reconnect here.',
               button: (
                 <ReconnectButton
                   onClick={handleConnectClick}
@@ -196,9 +193,11 @@ const Index = () => {
         )}
         <Card
           content={{
-            title: 'Resolve with IDriss',
+            title: 'Resolve with IDriss Demo',
             description:
-              'Translate a Twitter username to an address and display it within MetaMask.',
+              'Translate a Twitter username to an address and send a 0 value demo transaction. \n'+
+              'Alternatively, try an ENS. Keep in mind: ',
+            span: "No resolving takes place on the front end!",
             resolve: true,
             button: (
               <SendHelloButton
@@ -212,10 +211,10 @@ const Index = () => {
         />
         <Notice>
           <p>
-            Please note that the <b>snap.manifest.json</b> and{' '}
-            <b>package.json</b> must be located in the server root directory and
-            the bundle must be hosted at the location specified by the location
-            field.
+            Examples for connected Twitter accounts are <Span>@idriss_xyz</Span> or <Span>@ConenSys</Span>.
+            An example email that can be tested is <Span>hello@idriss.xyz</Span>.
+            The functionality can be expanded by using the upcoming IDriss Send functionality, which enables sending
+            crypto to any Twitter, email and phone number through a proxy smart contract. Stay tuned!
           </p>
         </Notice>
       </CardContainer>

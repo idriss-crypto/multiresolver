@@ -43,7 +43,7 @@ export const Form = ({
           type="text"
           name="idToResolve"
           id="idToResolve"
-          defaultValue="@idriss_xyz"
+          defaultValue="Twitter username"
         />
       </FormWrapper>
     );

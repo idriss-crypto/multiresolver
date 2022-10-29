@@ -14,6 +14,10 @@ type CardProps = {
   fullWidth?: boolean;
 };
 
+const Span = styled.span`
+  color: ${(props) => props.theme.colors.primary.default};
+`;
+
 const CardWrapper = styled.div<{ fullWidth?: boolean; disabled: boolean }>`
   display: flex;
   flex-direction: column;
@@ -49,11 +53,11 @@ const Description = styled.p`
 `;
 
 export const Card = ({ content, disabled = false, fullWidth }: CardProps) => {
-  const { title, description, resolve, button } = content;
+  const { title, description, span, resolve, button } = content;
   return (
     <CardWrapper fullWidth={fullWidth} disabled={disabled}>
       <Title>{title}</Title>
-      <Description>{description}</Description>
+      <Description>{description}<Span>{span}</Span></Description>
       <Form resolve={resolve} disabled={false} fullWidth={false}></Form>
       {button}
     </CardWrapper>

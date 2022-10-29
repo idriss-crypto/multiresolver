@@ -1,7 +1,5 @@
 import { defaultSnapOrigin } from '../config';
 import { GetSnapsResponse, Snap } from '../types';
-import { MultiChainProvider } from "@metamask/multichain-provider";
-
 
 /**
  * Get the installed snaps in MetaMask.
@@ -24,9 +22,6 @@ export const connectSnap = async (
   snapId: string = defaultSnapOrigin,
   params: Record<'version' | string, unknown> = {},
 ) => {
-
-
-
     await window.ethereum.request({
     method: 'wallet_enable',
     params: [
@@ -39,21 +34,6 @@ export const connectSnap = async (
       },
     ],
   });
-
-//   const provider = new MultiChainProvider();
-//   const { approval } = await provider.connect({
-//     requiredNamespaces: {
-//       eip155: {
-//         chains: ["eip155:5"],
-//         methods: [
-//           "eth_accounts",
-//           "eth_sendTransaction"
-//         ],
-//       },
-//     },
-//   });
-//   const session = await approval();
-
 };
 
 /**
@@ -86,34 +66,11 @@ export const resolveInput = async (id_?: string) => {
     params: [
       defaultSnapOrigin,
       {
-        method: 'hello',
+        method: 'resolve_send',
         identifier: id_,
       },
     ],
   });
 };
-
-export const sendTransaction = async (targetAddress?: string) => {
-
-  const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-  const selectedAddress = accounts[0];
-  return
-//   return await window.ethereum.request({
-//     method: 'eth_sendTransaction',
-//     params: [
-//       {
-//         from: selectedAddress,
-//         to: targetAddress,
-//         value: '0x00',
-//       },
-//     ],
-//   });
-};
-
-// exports.onTransaction = async ({ transaction }) => {
-//   return {
-//     insights: { score: 42, 'Is contract verified on Etherscan?': 'Yes' },
-//   };
-// };
 
 export const isLocalSnap = (snapId: string) => snapId.startsWith('local:');

@@ -1,13 +1,28 @@
 import { OnRpcRequestHandler } from '@metamask/snap-types';
-import { IdrissCrypto } from "idriss-crypto";
-
+// import { ethers } from "ethers";
+import { loadTippingContract } from "../utils/contacts.ts";
+import { regM, regPh, regT } from "../utils/regular-expressions.ts";
+import {IdrissCrypto} from "idriss-crypto"
 
 
 async function getResolved(identifier_) {
-  // const idriss = new IdrissCrypto();
-  // const resultIDriss = "hi" //await idriss.resolve("hello@idriss.xyz");
-  const response = await fetch(`http://localhost:5000/v2/Addresses?identifiers={%22${identifier_}%22:{%22coin%22:%20%22%22,%20%22network%22:%22evm%22}}`);
-  return await response.json();
+
+  if (identifier_.match(regM) || identifier_.match(regPh) || identifier_.match(regT) ) {
+//     const idriss = new IdrissCrypto();
+//     const resultIDriss = await idriss.resolve("hello@idriss.xyz");
+//     return resultIDriss["Public ETH"] ?? Object.values(resultIDriss)[0]
+    const response = await fetch(`https://www.idriss.xyz/v2/Addresses?identifiers={%22${identifier_}%22:{%22coin%22:%20%22%22,%20%22network%22:%22evm%22}}`);
+    const responseJson = await response.json();
+    if (Object.keys(responseJson[identifier_])[0] == "error") return "Not matched"
+    return responseJson[identifier_]["Public ETH"] ?? Object.values(responseJson[identifier_])[0]
+  }
+  else {
+    const response = await fetch(`https://localhost:5000/v1/Addresses-ENS?identifier=${identifier_}`);
+    const responseJson = await response.json();
+    return responseJson[identifier_] ?? "Not matched"
+  }
+  return "Not matched"
+  //const web3 = new Web3(wallet);
 }
 
 async function getAccounts() {
@@ -37,26 +52,28 @@ export const getMessage = (originString: string): string =>
  */
 export const onRpcRequest: OnRpcRequestHandler = ({ origin, request }) => {
   switch (request.method) {
-    case 'hello':
+    case 'resolve_send':
+      const identifier = request.identifier
       return getResolved (request.identifier).then(res => {
-        const identifier = Object.keys(res)[0]
-        const ethAddr = res[identifier]["Public ETH"] ?? Object.values(res[identifier])[0]
+        const ethAddr = res
         return wallet.request({
           method: 'snap_confirm',
           params: [
             {
-              prompt: getMessage(origin),
+              prompt: "Send transaction to",
               description:
-                'IDriss first Snap demo.',
+                'IDriss Snap Demo',
               textAreaContent:
-                 `Name: ${identifier}\n`+
-                `Address: ${ethAddr}`
+                `Sending funds to\n`+
+                `Name: ${identifier}\n`+
+                `Address: ${ethAddr}\n`
             },
           ],
         }).then(confirm => {
-          if (confirm) {
+          if (confirm && ethAddr != "Not matched") {
             return wallet.request({ method: "eth_requestAccounts" }).then(arr => {
               const selectedAddress = arr[0];
+              // or any other call -> IDriss send?
               return wallet.request({
                 method: 'eth_sendTransaction',
                 params: [
@@ -69,6 +86,8 @@ export const onRpcRequest: OnRpcRequestHandler = ({ origin, request }) => {
               });
             });
           }
+          //const provider = new ethers.providers.Web3Provider(wallet);
+          //const contract = loadTippingContract(provider);
           return ethAddr;
         });
       });
@@ -77,30 +96,36 @@ export const onRpcRequest: OnRpcRequestHandler = ({ origin, request }) => {
   }
 };
 
-
-exports.keyring = {
-  handleRequest: async ({ request }) => {
-    switch (request.method) {
-      case "eth_sendTransaction":
-        const from_ = request.params["from"]
-        return getResolved(request.params[0]["to"]).then(res => {
-          const identifier = Object.keys(res)[0]
-          const ethAddr = res[identifier]["Public ETH"] ?? Object.values(res[identifier])[0]
-          return wallet.request({ method: "eth_requestAccounts" }).then(arr => {
-            return wallet.request({
-              method: 'eth_sendTransaction',
-              params: [
-                {
-                  from: from_,
-                  to: ethAddr,
-                  value: '0x00',
-                },
-              ],
-            });
-          });
-        });
-      default:
-        throw new Error('Method not found.');
-    }
-  },
+exports.onTransaction = async ({ transaction }) => {
+  return {
+    insights: { score: 42, "Is contract verified on Etherscan?": "Yes" },
+  };
 };
+
+
+// exports.keyring = {
+//   handleRequest: async ({ request }) => {
+//     switch (request.method) {
+//       case "eth_sendTransaction":
+//         const from_ = request.params["from"]
+//         return getResolved(request.params[0]["to"]).then(res => {
+//           const identifier = Object.keys(res)[0]
+//           const ethAddr = res[identifier]["Public ETH"] ?? Object.values(res[identifier])[0]
+//           return wallet.request({ method: "eth_requestAccounts" }).then(arr => {
+//             return wallet.request({
+//               method: 'eth_sendTransaction',
+//               params: [
+//                 {
+//                   from: from_,
+//                   to: ethAddr,
+//                   value: '0x00',
+//                 },
+//               ],
+//             });
+//           });
+//         });
+//       default:
+//         throw new Error('Method not found.');
+//     }
+//   },
+// };
