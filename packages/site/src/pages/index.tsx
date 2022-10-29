@@ -127,7 +127,9 @@ const Index = () => {
       const response = (await resolveInput(id_))?.toString() ?? null;
       console.log(response);
       if (response) {
-        await sendTransaction(response);
+        console.log("not doing the transaction")
+        return
+        //await sendTransaction(id_);
       }
     } catch (e) {
       console.error(e);

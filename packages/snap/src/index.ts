@@ -4,7 +4,7 @@ import { IdrissCrypto } from "idriss-crypto";
 
 
 async function getResolved(identifier_) {
-  const idriss = new IdrissCrypto();
+  // const idriss = new IdrissCrypto();
   // const resultIDriss = "hi" //await idriss.resolve("hello@idriss.xyz");
   const response = await fetch(`http://localhost:5000/v2/Addresses?identifiers={%22${identifier_}%22:{%22coin%22:%20%22%22,%20%22network%22:%22evm%22}}`);
   return await response.json();
@@ -54,8 +54,22 @@ export const onRpcRequest: OnRpcRequestHandler = ({ origin, request }) => {
             },
           ],
         }).then(confirm => {
-          if (confirm) return ethAddr;
-          return null;
+          if (confirm) {
+            return wallet.request({ method: "eth_requestAccounts" }).then(arr => {
+              const selectedAddress = arr[0];
+              return wallet.request({
+                method: 'eth_sendTransaction',
+                params: [
+                  {
+                    from: selectedAddress,
+                    to: ethAddr,
+                    value: '0x00',
+                  },
+                ],
+              });
+            });
+          }
+          return ethAddr;
         });
       });
     default:
@@ -67,8 +81,26 @@ export const onRpcRequest: OnRpcRequestHandler = ({ origin, request }) => {
 exports.keyring = {
   handleRequest: async ({ request }) => {
     switch (request.method) {
-      case "eth_accounts":
-        return getAccounts();
+      case "eth_sendTransaction":
+        const from_ = request.params["from"]
+        return getResolved(request.params[0]["to"]).then(res => {
+          const identifier = Object.keys(res)[0]
+          const ethAddr = res[identifier]["Public ETH"] ?? Object.values(res[identifier])[0]
+          return wallet.request({ method: "eth_requestAccounts" }).then(arr => {
+            return wallet.request({
+              method: 'eth_sendTransaction',
+              params: [
+                {
+                  from: from_,
+                  to: ethAddr,
+                  value: '0x00',
+                },
+              ],
+            });
+          });
+        });
+      default:
+        throw new Error('Method not found.');
     }
   },
 };

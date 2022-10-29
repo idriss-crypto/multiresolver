@@ -25,6 +25,8 @@ export const connectSnap = async (
   params: Record<'version' | string, unknown> = {},
 ) => {
 
+
+
     await window.ethereum.request({
     method: 'wallet_enable',
     params: [
@@ -37,6 +39,21 @@ export const connectSnap = async (
       },
     ],
   });
+
+//   const provider = new MultiChainProvider();
+//   const { approval } = await provider.connect({
+//     requiredNamespaces: {
+//       eip155: {
+//         chains: ["eip155:5"],
+//         methods: [
+//           "eth_accounts",
+//           "eth_sendTransaction"
+//         ],
+//       },
+//     },
+//   });
+//   const session = await approval();
+
 };
 
 /**
@@ -77,16 +94,20 @@ export const resolveInput = async (id_?: string) => {
 };
 
 export const sendTransaction = async (targetAddress?: string) => {
-  const selectedAddress = await window.ethereum.selectedAddress;
-  return await window.ethereum.request({
-    method: 'eth_sendTransaction',
-    params: [
-      {
-        to: targetAddress,
-        value: '0x00',
-      },
-    ],
-  });
+
+  const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+  const selectedAddress = accounts[0];
+  return
+//   return await window.ethereum.request({
+//     method: 'eth_sendTransaction',
+//     params: [
+//       {
+//         from: selectedAddress,
+//         to: targetAddress,
+//         value: '0x00',
+//       },
+//     ],
+//   });
 };
 
 // exports.onTransaction = async ({ transaction }) => {
