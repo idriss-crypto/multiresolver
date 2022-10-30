@@ -25,8 +25,8 @@ const resolveInput = async (identifier?: string) => {
 
 Which invokes the resolving process in MetaMask. The user is presented with the result of the resolver and can either accept or decline sending funds to the person defined through *identifier*.
 
-<p style="text-align: center; width: 50%">
-<img alt="UI Implementation Example" src="images/mmApprove.png"/>
+<p style="text-align: center">
+<img alt="UI Implementation Example" width="320" src="images/mmApprove.png"/>
 </p>
 
 ## Usage
