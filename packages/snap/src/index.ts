@@ -17,7 +17,7 @@ async function getResolved(identifier_) {
     return responseJson[identifier_]["Public ETH"] ?? Object.values(responseJson[identifier_])[0]
   }
   else {
-    const response = await fetch(`https://localhost:5000/v1/Addresses-ENS?identifier=${identifier_}`);
+    const response = await fetch(`https://www.idriss.xyz/v1/Addresses-ENS?identifier=${identifier_}`);
     const responseJson = await response.json();
     return responseJson[identifier_] ?? "Not matched"
   }
