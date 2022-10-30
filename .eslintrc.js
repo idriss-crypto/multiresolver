@@ -16,12 +16,12 @@ module.exports = {
       files: ['**/*.{ts,tsx}'],
       extends: ['@metamask/eslint-config-typescript'],
       rules: {
-      "prettier/prettier": [
-        "error",
-        {
-          "endOfLine": "auto"
-        },
-      ],
+        'prettier/prettier': [
+          'error',
+          {
+            endOfLine: 'auto',
+          },
+        ],
         '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
       },
     },
@@ -30,10 +30,10 @@ module.exports = {
       files: ['**/*.test.ts', '**/*.test.js'],
       extends: ['@metamask/eslint-config-jest'],
       rules: {
-        "prettier/prettier": [
-          "error",
+        'prettier/prettier': [
+          'error',
           {
-            "endOfLine": "auto"
+            endOfLine: 'auto',
           },
         ],
         '@typescript-eslint/no-shadow': [

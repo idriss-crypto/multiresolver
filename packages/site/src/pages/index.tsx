@@ -140,7 +140,7 @@ const Index = () => {
         Welcome to <Span>Multi Resolver Snap</Span>
       </Heading>
       <Subtitle>
-        The snap that lets you send crypto to <Span>anything</Span>.
+        The snap that lets you send crypto to <Span>anything</Span>
       </Subtitle>
       <CardContainer>
         {state.error && (
@@ -195,8 +195,8 @@ const Index = () => {
           content={{
             title: 'Resolve with IDriss Demo',
             description:
-              'Translate a Twitter username to an address and send a 0 value demo transaction. \n'+
-              'Alternatively, try an ENS. Keep in mind: ',
+              'Translate anything to an address and send a 0 value transaction. \n'+
+              'Try a twitter name or ENS. Keep in mind: ',
             span: "No resolving takes place on the front end!",
             resolve: true,
             button: (
